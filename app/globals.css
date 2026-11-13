@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #f6f5f0;
+  --ink: #15211c;
+  --muted: #5d6b64;
+  --line: #e1e0d6;
+  --brand: #0f766e;
+  --brand-ink: #0b4f4a;
+  --card: #ffffff;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+.mark-high { background: #fde8e6; border-bottom: 2px solid #c0392b; }
+.mark-medium { background: #fdf1d6; border-bottom: 2px solid #c98a0b; }
+.mark-low { background: #e6f0ef; border-bottom: 2px dotted #0f766e; }
