@@ -30,3 +30,11 @@ body {
 .mark-high { background: #fde8e6; border-bottom: 2px solid #c0392b; }
 .mark-medium { background: #fdf1d6; border-bottom: 2px solid #c98a0b; }
 .mark-low { background: #e6f0ef; border-bottom: 2px dotted #0f766e; }
+
+@theme inline {
+  --color-night: #0b1816;
+  --color-night-2: #12251f;
+  --color-cream: #f3efe4;
+  --color-mint: #5eead4;
+}
+html { scroll-behavior: smooth; }
