@@ -48,7 +48,7 @@ export default function Workbench() {
   }
 
   return (
-    <section id="try" className="mx-auto max-w-6xl px-6 py-24">
+    <section id="try" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-24">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="font-display text-5xl md:text-6xl">Try it on a draft</h2>
@@ -103,7 +103,7 @@ export default function Workbench() {
           <div className="flex items-center justify-between gap-4 border-b border-line p-5">
             <div>
               <div className="text-lg font-semibold">
-                {findings.length === 0 ? "No issues found" : `${findings.length} findings`}
+                {findings.length === 0 ? "No issues found" : `${findings.length} ${findings.length === 1 ? "finding" : "findings"}`}
               </div>
               <div className="text-sm text-muted">
                 {high} high severity · {format}

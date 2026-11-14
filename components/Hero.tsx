@@ -113,7 +113,7 @@ export default function Hero() {
                   <Annotated text={text} findings={findings} size="sm" />
                   <div className="mt-3">
                     <span className={`rounded-full px-3 py-1 text-xs font-medium ${findings.length ? "bg-red-100 text-red-700" : "bg-emerald-100 text-emerald-700"}`}>
-                      {findings.length ? `${findings.length} findings` : "Ready for review"}
+                      {findings.length ? `${findings.length} ${findings.length === 1 ? "finding" : "findings"}` : "Ready for review"}
                     </span>
                   </div>
                 </div>

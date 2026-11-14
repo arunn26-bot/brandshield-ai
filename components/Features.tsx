@@ -41,7 +41,7 @@ function Head({ icon, title }: { icon: string; title: string }) {
 
 export default function Features() {
   return (
-    <section id="depth" className="mx-auto max-w-6xl px-6 py-24">
+    <section id="depth" className="mx-auto max-w-6xl scroll-mt-20 px-6 py-24">
       <h2 className="max-w-3xl font-display text-5xl md:text-7xl">More than a style checker</h2>
 
       <div className="mt-16 space-y-24">
