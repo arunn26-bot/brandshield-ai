@@ -91,3 +91,14 @@ export const RULES: Rule[] = [
     source: "Brand Book p.10 §4.2",
   },
 ];
+
+export const PALETTE = [
+  { name: "Nest Teal", hex: "#0F766E" },
+  { name: "Night", hex: "#0B1816" },
+  { name: "Cream", hex: "#F3EFE4" },
+  { name: "Mint", hex: "#5EEAD4" },
+  { name: "Gold", hex: "#E6C364" },
+  { name: "White", hex: "#FFFFFF" },
+];
+
+export const LIMITS = { emailSubject: 60, adHeadline: 40, adDescription: 125 };

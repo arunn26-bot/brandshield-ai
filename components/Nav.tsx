@@ -3,6 +3,7 @@ import Icon from "./Icon";
 const LINKS = [
   ["How it works", "#how"],
   ["Try it", "#try"],
+  ["Content Watch", "#watch"],
   ["Features", "#depth"],
   ["Trust", "#trust"],
 ];

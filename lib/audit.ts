@@ -1,3 +1,5 @@
+export const TRAIL_KEY = "brandshield.trail.v2";
+
 export type Decision = "approved" | "approved_override" | "changes_requested" | "rejected";
 
 export interface AuditEntry {
@@ -10,6 +12,7 @@ export interface AuditEntry {
   format: string;
   contentHash: string;
   contentPreview: string;
+  content: string;
   openFindings: string[];
   rulebook: string;
   prevHash: string;
@@ -25,7 +28,7 @@ export async function sha256(text: string): Promise<string> {
 function payload(e: Omit<AuditEntry, "hash">): string {
   return JSON.stringify([
     e.n, e.at, e.reviewer, e.role, e.decision, e.comment, e.format,
-    e.contentHash, e.contentPreview, e.openFindings, e.rulebook, e.prevHash,
+    e.contentHash, e.contentPreview, e.content, e.openFindings, e.rulebook, e.prevHash,
   ]);
 }
 

@@ -1,5 +1,5 @@
 export type Severity = "high" | "medium" | "low";
-export type Category = "Claim" | "Tone" | "Terminology" | "Disclaimer";
+export type Category = "Claim" | "Tone" | "Terminology" | "Disclaimer" | "Visual";
 
 export interface Rule {
   id: string;
@@ -38,4 +38,6 @@ export interface Finding {
   fix: string | null;
   source: string;
   disclaimerToAdd?: string;
+  /** A suggestion the person applies themselves (no automatic replacement). */
+  manual?: boolean;
 }

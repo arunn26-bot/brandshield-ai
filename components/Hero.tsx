@@ -53,6 +53,7 @@ export default function Hero() {
                 "Checks captions, emails and ads against approved rules and facts",
                 "Every finding quotes the draft and names the rule it breaks",
                 "Fixes keep your message and use approved wording",
+                "Re-checks approved content when facts change or offers expire",
                 "A person makes the final call",
               ].map((t) => (
                 <li key={t} className="flex items-start gap-3">

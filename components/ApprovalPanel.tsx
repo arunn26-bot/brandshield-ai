@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AuditEntry, Decision, createEntry, sha256, verifyTrail } from "@/lib/audit";
+import { AuditEntry, Decision, TRAIL_KEY, createEntry, sha256, verifyTrail } from "@/lib/audit";
 import { Finding } from "@/lib/types";
 import { BRAND } from "@/data/brand";
 
@@ -9,8 +9,6 @@ const REVIEWERS = [
   { name: "Ananya", role: "Compliance Lead" },
   { name: "Rohan", role: "Brand Reviewer" },
 ];
-
-const STORE = "brandshield.trail.v1";
 
 const LABEL: Record<Decision, string> = {
   approved: "Approved",
@@ -27,11 +25,13 @@ const BADGE: Record<Decision, string> = {
 };
 
 export default function ApprovalPanel({
-  text, findings, format,
-}: { text: string; findings: Finding[]; format: string }) {
+  text, findings, format, trail, setTrail,
+}: {
+  text: string; findings: Finding[]; format: string;
+  trail: AuditEntry[]; setTrail: (t: AuditEntry[]) => void;
+}) {
   const [who, setWho] = useState(0);
   const [comment, setComment] = useState("");
-  const [trail, setTrail] = useState<AuditEntry[]>([]);
   const [verdict, setVerdict] = useState<string | null>(null);
   const [hash, setHash] = useState("");
 
@@ -41,27 +41,20 @@ export default function ApprovalPanel({
   const commentOk = comment.trim().length >= 10;
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORE);
-      if (raw) setTrail(JSON.parse(raw));
-    } catch {}
-  }, []);
-
-  useEffect(() => {
     sha256(text).then(setHash);
   }, [text]);
 
   function save(next: AuditEntry[]) {
     setTrail(next);
     setVerdict(null);
-    try { localStorage.setItem(STORE, JSON.stringify(next)); } catch {}
+    try { localStorage.setItem(TRAIL_KEY, JSON.stringify(next)); } catch {}
   }
 
   async function decide(decision: Decision) {
     const entry = await createEntry(trail[trail.length - 1], {
       reviewer: reviewer.name, role: reviewer.role, decision,
       comment: comment.trim(), format, contentHash: hash,
-      contentPreview: text.slice(0, 80), openFindings: findings.map((f) => f.ruleId),
+      contentPreview: text.slice(0, 80), content: text, openFindings: findings.map((f) => f.ruleId),
       rulebook: BRAND.rulebookVersion,
     }, new Date());
     save([...trail, entry]);

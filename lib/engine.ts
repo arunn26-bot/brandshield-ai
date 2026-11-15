@@ -1,17 +1,22 @@
 import { FACTS, RULES } from "@/data/brand";
-import { Finding, Severity } from "./types";
+import { Fact, Finding, Severity } from "./types";
 
 const WEIGHT: Record<Severity, number> = { high: 3, medium: 2, low: 1 };
 
 function sentences(text: string) {
+  // Protect decimals ("6.5") and "p.a." from being treated as sentence ends.
+  // Replacements keep the same length, so offsets still match the original text.
+  const safe = text.replace(/(\d)\.(?=\d)/g, "$1\u00b7").replace(/\bp\.a\./gi, (m) => m.replace(/\./g, "\u00b7"));
   const out: { s: string; start: number }[] = [];
   const re = /[^.!?।\n]+[.!?।]*/g;
   let m: RegExpExecArray | null;
-  while ((m = re.exec(text))) out.push({ s: m[0], start: m.index });
+  while ((m = re.exec(safe))) out.push({ s: text.slice(m.index, m.index + m[0].length), start: m.index });
   return out;
 }
 
-export function runChecks(text: string, today: Date): Finding[] {
+export function runChecks(
+  text: string, today: Date, facts: Fact[] = FACTS, extras: Omit<Finding, "id">[] = []
+): Finding[] {
   const found: Omit<Finding, "id">[] = [];
 
   // 1) Pattern rules (tone, terminology, banned claims)
@@ -28,7 +33,7 @@ export function runChecks(text: string, today: Date): Finding[] {
 
   // 2) Claim Ledger: numeric mismatch and expiry
   for (const { s, start } of sentences(text)) {
-    for (const f of FACTS) {
+    for (const f of facts) {
       const t = s.match(f.topicPattern);
       if (!t || t.index === undefined) continue;
 
@@ -91,7 +96,8 @@ export function runChecks(text: string, today: Date): Finding[] {
     }
     kept.push(f);
   }
-  return kept.map((f, i) => ({ ...f, id: String(i + 1) }));
+  const all = [...kept, ...extras].sort((a, b) => a.start - b.start || WEIGHT[b.severity] - WEIGHT[a.severity]);
+  return all.map((f, i) => ({ ...f, id: String(i + 1) }));
 }
 
 /** Apply selected fixes: each fix replaces only its own span. */
@@ -99,16 +105,39 @@ export function applyFixes(text: string, findings: Finding[]): string {
   let out = text;
   const extras: string[] = [];
   for (const f of [...findings].sort((a, b) => b.start - a.start)) {
+    if (f.manual) continue;
     if (f.end > f.start) {
       out = out.slice(0, f.start) + (f.fix ?? "") + out.slice(f.end);
     }
     if (f.disclaimerToAdd && !extras.includes(f.disclaimerToAdd)) extras.push(f.disclaimerToAdd);
   }
-  out = out.replace(/\s{2,}/g, " ").replace(/\s+([!?.,])/g, "$1").trim();
+  out = out.replace(/[ \t]{2,}/g, " ").replace(/[ \t]+([!?.,])/g, "$1").trim();
   return extras.length ? `${out}\n${extras.join("\n")}` : out;
 }
 
 export function brandScore(findings: Finding[]): number {
   const penalty = findings.reduce((n, f) => n + { high: 25, medium: 12, low: 5 }[f.severity], 0);
   return Math.max(0, 100 - penalty);
+}
+
+/** Facts a draft actually relies on (its topic, and its number where the fact has one, both appear). */
+export function factsUsed(text: string, facts: Fact[] = FACTS): Fact[] {
+  const used: Fact[] = [];
+  for (const { s } of sentences(text)) {
+    for (const f of facts) {
+      if (used.includes(f) || !f.topicPattern.test(s)) continue;
+      if (f.value === null) { used.push(f); continue; }
+      const v = s.match(f.valuePattern);
+      if (v && parseFloat((v[1] ?? v[2]).replace(/,/g, "")) === f.value) used.push(f);
+    }
+  }
+  return used;
+}
+
+/** The date after which this content is no longer safe: the earliest expiry among the facts it uses. */
+export function shelfLife(text: string, facts: Fact[] = FACTS): { until: string | null; ids: string[] } {
+  const used = factsUsed(text, facts);
+  if (!used.length) return { until: null, ids: [] };
+  const until = used.map((f) => f.validTo).sort()[0];
+  return { until, ids: used.filter((f) => f.validTo === until).map((f) => f.id) };
 }
