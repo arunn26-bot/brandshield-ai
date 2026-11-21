@@ -1,0 +1,34 @@
+{"id": "h01", "format": "caption", "text": "Join thousands who say PayNest is the number one UPI app.", "expect": ["CLAIM-03"]}
+{"id": "h02", "format": "caption", "text": "Your savings are 100% safe with PayNest.", "expect": ["CLAIM-02"]}
+{"id": "h03", "format": "caption", "text": "Nest Save pays you 8% interest every year.", "expect": ["CLAIM-01", "DISC-01"]}
+{"id": "h04", "format": "caption", "text": "Get ₹250 cashback when you make your first UPI payment.", "expect": ["CLAIM-01"]}
+{"id": "h05", "format": "caption", "text": "RBI approved: PayNest is the safest way to pay.", "expect": ["CLAIM-04", "CLAIM-03"]}
+{"id": "h06", "format": "caption", "text": "Open your PayNest bank account in two minutes.", "expect": ["TERM-02"]}
+{"id": "h07", "format": "caption", "text": "Download Paynest and start saving today!!!", "expect": ["TERM-01", "VOICE-01"]}
+{"id": "h08", "format": "caption", "text": "WOW!!! Amazing news, you NEED this app right now!!!", "expect": ["VOICE-01"]}
+{"id": "h09", "format": "caption", "text": "Celebrate with Diwali double cashback, ends soon.", "today": "2026-11-21T12:00:00", "expect": ["CLAIM-05"]}
+{"id": "h10", "format": "caption", "text": "Write to us at neha.verma@example.com for help.", "expect": ["PII-01"]}
+{"id": "h11", "format": "caption", "text": "Call us on 9123456780 to claim your reward.", "expect": ["PII-02"]}
+{"id": "h12", "format": "caption", "text": "Verify with Aadhaar 2345 6789 0123 before you start.", "expect": ["PII-03"]}
+{"id": "h13", "format": "caption", "text": "Keep your PAN FGHIJ5678K ready.", "expect": ["PII-04"]}
+{"id": "h14", "format": "caption", "text": "We charged card 5500 0000 0000 0004 by mistake.", "expect": ["PII-05"]}
+{"id": "h15", "format": "caption", "text": "Why PayNest is easy: PаyNest keeps payments simple.", "expect": ["HOMO-01"]}
+{"id": "h16", "format": "caption", "text": "Say hello to Pay‍Nest today.", "expect": ["HOMO-02"]}
+{"id": "h17", "format": "email", "subject": "SPECIAL OFFER JUST FOR YOU TODAY ONLY", "body": "Get up to ₹100 cashback on your first UPI payment.", "expect": ["EMAIL-03", "EMAIL-04", "EMAIL-02"]}
+{"id": "h18", "format": "email", "subject": "Your monthly PayNest summary", "body": "Hi Priya,\n\nHere is your summary for the month.\n\nTo stop receiving these emails, unsubscribe at any time.", "expect": []}
+{"id": "h19", "format": "email", "subject": "", "body": "Hi Sam,\n\nThanks for joining.\n\nTo stop receiving these emails, unsubscribe at any time.", "expect": ["EMAIL-00"]}
+{"id": "h20", "format": "email", "subject": "A lot of good things are waiting for you inside your PayNest app today", "body": "Hi Dev,\n\nCome and have a look.\n\nTo stop receiving these emails, unsubscribe at any time.", "expect": ["EMAIL-01"]}
+{"id": "h21", "format": "ad", "headline": "PayNest turns every single UPI payment into something quick and calm", "description": "Pay friends, pay shops, download PayNest.", "expect": ["AD-01"]}
+{"id": "h22", "format": "ad", "headline": "PayNest: payments made simple", "description": "Pay anyone from one app.", "expect": ["AD-03"]}
+{"id": "h23", "format": "caption", "text": "We do not promise guaranteed returns.", "expect": []}
+{"id": "h24", "format": "caption", "text": "A rival claims it is the fastest app. We make no such claim.", "expect": []}
+{"id": "h25", "format": "caption", "text": "Our partner banks are regulated by the RBI.", "expect": []}
+{"id": "h26", "format": "caption", "text": "Last year our Diwali cashback was a favourite with families.", "today": "2026-11-21T12:00:00", "expect": []}
+{"id": "h27", "format": "caption", "text": "Saving 20% of your salary is a good habit.", "expect": []}
+{"id": "h28", "format": "caption", "text": "Our helpline answers within 5 minutes.", "expect": []}
+{"id": "h29", "format": "caption", "text": "Add 2 members to your family plan.", "expect": []}
+{"id": "h30", "format": "caption", "text": "Over 10 lakh users trust PayNest.", "expect": ["CLAIM-06"]}
+{"id": "h31", "format": "caption", "text": "PayNest checkout is 4x faster than cash.", "expect": ["CLAIM-06"]}
+{"id": "h32", "format": "caption", "text": "Get 40% more rewards than other apps.", "expect": ["CLAIM-06"]}
+{"id": "h33", "format": "caption", "text": "Sabse best app hai PayNest.", "expect": ["CLAIM-03"]}
+{"id": "h34", "format": "caption", "text": "Paynest ka guaranteed return, 100% safe.", "expect": ["TERM-01", "CLAIM-02"]}
