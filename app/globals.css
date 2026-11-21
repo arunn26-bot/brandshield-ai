@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #f6f5f0;
-  --ink: #15211c;
-  --muted: #5d6b64;
-  --line: #e1e0d6;
-  --brand: #0f766e;
-  --brand-ink: #0b4f4a;
-  --card: #ffffff;
+  --paper: #f4f2ea;
+  --ink: #0e1a15;
+  --muted: #5a6a62;
+  --line: #dedcd0;
+  --brand: #0a7a5c;
+  --brand-ink: #075744;
+  --card: #fffefb;
 }
 
 @theme inline {
@@ -17,26 +17,60 @@
   --color-line: var(--line);
   --color-brand: var(--brand);
   --color-brand-ink: var(--brand-ink);
+  --color-card: var(--card);
+  --color-night: #07130f;
+  --color-night-2: #0f221b;
+  --color-cream: #f4efe2;
+  --color-mint: #6ff5c9;
+  --color-gold: #e8c56a;
+  --color-coral: #e85d4a;
   --font-display: var(--font-fraunces), Georgia, serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-ibm-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(10, 122, 92, 0.35) transparent;
 }
 
 body {
-  background: var(--paper);
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(1200px 700px at 8% -8%, rgba(10, 122, 92, 0.1), transparent 60%),
+    radial-gradient(1000px 600px at 100% 0%, rgba(232, 197, 106, 0.08), transparent 55%);
+  background-attachment: fixed;
   color: var(--ink);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }
 
-.mark-high { background: #fde8e6; border-bottom: 2px solid #c0392b; }
-.mark-medium { background: #fdf1d6; border-bottom: 2px solid #c98a0b; }
-.mark-low { background: #e6f0ef; border-bottom: 2px dotted #0f766e; }
-
-@theme inline {
-  --color-night: #0b1816;
-  --color-night-2: #12251f;
-  --color-cream: #f3efe4;
-  --color-mint: #5eead4;
+::selection {
+  background: #6ff5c9;
+  color: #07130f;
 }
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+}
+
+.font-display {
+  letter-spacing: -0.018em;
+}
+
+/* Warm-white panels get a quiet lift so the workbench reads as layered paper. */
+.bg-white.border-line.rounded-3xl,
+.bg-card.border-line.rounded-3xl {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 24px 60px -48px rgba(14, 26, 21, 0.55);
+}
+
+.mark-high { background: #fbe3de; border-bottom: 2px solid #d64b3c; }
+.mark-medium { background: #fbf0d2; border-bottom: 2px solid #c98a0b; }
+.mark-low { background: #def3ea; border-bottom: 2px dotted #0a7a5c; }
+
 html { scroll-behavior: smooth; }
 
 @theme inline {
@@ -50,6 +84,10 @@ html { scroll-behavior: smooth; }
 @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-4px); } 40% { transform: translateX(4px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(3px); } }
 @keyframes twinkle { 0%,100% { opacity: 0.25; transform: scale(0.7); } 50% { opacity: 1; transform: scale(1); } }
 @keyframes drip { 0%,100% { transform: translateY(0); opacity: 0.9; } 50% { transform: translateY(4px); opacity: 0.5; } }
+@keyframes labIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes stamp { 0% { transform: scale(1.8) rotate(-16deg); opacity: 0; } 55% { transform: scale(0.94) rotate(-5deg); opacity: 1; } 100% { transform: scale(1) rotate(-4deg); opacity: 1; } }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes demoProg { from { width: 0%; } to { width: 100%; } }
 
 .animate-floaty { animation: floaty 5s ease-in-out infinite; }
 .animate-blink { animation: blink 4s infinite; transform-box: fill-box; transform-origin: center; }
@@ -57,11 +95,25 @@ html { scroll-behavior: smooth; }
 .animate-shake { animation: shake 0.5s; }
 .animate-twinkle { animation: twinkle 2.4s ease-in-out infinite; }
 .animate-drip { animation: drip 1.4s ease-in-out infinite; }
+.animate-stamp { animation: stamp 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.lab-in { opacity: 0; animation: labIn 0.45s ease-out both; }
+
+.ticker { animation: ticker 48s linear infinite; }
+.ticker:hover { animation-play-state: paused; }
+
+.demo-progress { animation: demoProg 3.6s linear forwards; }
+.demo-progress.paused { animation-play-state: paused; }
+
+.lift { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.lift:hover { transform: translateY(-2px); }
 
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
 .reveal.in { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-floaty, .animate-blink, .animate-pop, .animate-shake, .animate-twinkle, .animate-drip { animation: none; }
+  .animate-floaty, .animate-blink, .animate-pop, .animate-shake, .animate-twinkle, .animate-drip, .animate-stamp, .animate-ping, .ticker { animation: none; }
+  .demo-progress { animation: none; width: 100%; }
+  .lab-in { opacity: 1; animation: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
+  .lift:hover { transform: none; }
 }

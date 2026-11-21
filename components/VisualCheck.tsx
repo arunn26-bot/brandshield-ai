@@ -4,14 +4,17 @@ import { useEffect, useRef, useState } from "react";
 import { PALETTE } from "@/data/brand";
 import { Finding } from "@/lib/types";
 import { sha256 } from "@/lib/audit";
-import { Contrast, Swatch, dominantColors, regionContrast, visualFindings } from "@/lib/visual";
+import { Contrast, PaletteColor, Swatch, dominantColors, regionContrast, visualFindings } from "@/lib/visual";
 
 type Region = { x: number; y: number; w: number; h: number };
 const MAX_W = 640;
 
 export default function VisualCheck({
-  onResult,
-}: { onResult: (r: { label: string; findings: Finding[] } | null) => void }) {
+  onResult, palette = PALETTE,
+}: {
+  onResult: (r: { label: string; findings: Finding[] } | null) => void;
+  palette?: PaletteColor[];
+}) {
   const ref = useRef<HTMLCanvasElement>(null);
   const [name, setName] = useState("");
   const [version, setVersion] = useState(0);
@@ -76,7 +79,7 @@ export default function VisualCheck({
     if (!c || !version) return;
     const ctx = c.getContext("2d")!;
     const data = ctx.getImageData(0, 0, c.width, c.height).data;
-    const sw = dominantColors(data, PALETTE);
+    const sw = dominantColors(data, palette);
     const ct = region && region.w > 8 && region.h > 8 ? regionContrast(data, c.width, c.height, region) : null;
     setSwatches(sw);
     setContrast(ct);
@@ -84,11 +87,11 @@ export default function VisualCheck({
     sha256(fingerprint).then((h) =>
       onResult({
         label: `Image creative: ${name} (${c.width}×${c.height}) · ${h.slice(0, 12)}`,
-        findings: visualFindings(sw, ct, PALETTE),
+        findings: visualFindings(sw, ct, palette),
       })
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [version, region]);
+  }, [version, region, palette]);
 
   const hasImage = version > 0;
 
@@ -163,7 +166,7 @@ export default function VisualCheck({
           <div>
             <div className="mb-2 text-xs font-medium uppercase tracking-wide text-muted">Approved palette</div>
             <div className="flex flex-wrap gap-2">
-              {PALETTE.map((p) => (
+              {palette.map((p) => (
                 <span key={p.hex} className="flex items-center gap-1.5 rounded-full border border-line bg-white py-0.5 pl-1 pr-2 text-xs">
                   <span className="h-4 w-4 rounded-full border border-line" style={{ background: p.hex }} />
                   {p.name}

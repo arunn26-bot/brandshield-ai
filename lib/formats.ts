@@ -1,5 +1,5 @@
 import { LIMITS } from "@/data/brand";
-import { Finding } from "./types";
+import type { Finding } from "./types";
 
 type Extra = Omit<Finding, "id">;
 

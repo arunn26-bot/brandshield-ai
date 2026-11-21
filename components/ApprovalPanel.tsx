@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AuditEntry, Decision, TRAIL_KEY, createEntry, sha256, verifyTrail } from "@/lib/audit";
 import { Finding } from "@/lib/types";
 import { BRAND } from "@/data/brand";
+import Icon from "./Icon";
 
 const REVIEWERS = [
   { name: "Ananya", role: "Compliance Lead" },
@@ -79,6 +80,7 @@ export default function ApprovalPanel({
   const canApprove = text.trim().length > 0 && (high.length === 0 || (isCompliance && commentOk));
   const last = trail[trail.length - 1];
   const stale = last && last.contentHash !== hash;
+  const approved = last ? last.decision === "approved" || last.decision === "approved_override" : false;
 
   return (
     <div className="mt-10 grid gap-6 lg:grid-cols-2">
@@ -143,16 +145,44 @@ export default function ApprovalPanel({
         </div>
 
         {last && (
-          <div className="mt-5 flex flex-wrap items-center gap-2 text-sm">
-            <span className={`rounded-full border px-3 py-1 ${BADGE[last.decision]}`}>
-              {LABEL[last.decision]}
-            </span>
-            <span className="text-muted">entry #{last.n}</span>
-            {stale && (
-              <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-amber-700">
-                Draft changed since this decision
-              </span>
-            )}
+          <div
+            key={last.n}
+            className={`mt-5 overflow-hidden rounded-2xl border p-4 ${
+              approved ? "border-emerald-200 bg-emerald-50/60" : "border-line bg-paper/70"
+            }`}
+          >
+            <div className="flex items-start gap-4">
+              {approved && (
+                <div className="animate-stamp flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-2 border-emerald-600/40 bg-white text-emerald-700 ring-4 ring-emerald-600/10">
+                  <Icon name="shield" className="h-8 w-8" />
+                </div>
+              )}
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className={`rounded-full border px-3 py-1 text-xs ${BADGE[last.decision]}`}>
+                    {LABEL[last.decision]}
+                  </span>
+                  <span className="text-xs text-muted">entry #{last.n}</span>
+                  {stale && (
+                    <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs text-amber-700">
+                      Draft changed since this decision
+                    </span>
+                  )}
+                </div>
+                <div className="mt-2 text-sm">
+                  {last.reviewer} · {last.role} · {new Date(last.at).toLocaleString()}
+                </div>
+                <div className="mt-1 font-mono text-[11px] text-muted">
+                  seal {last.hash.slice(0, 20)}… · prev{" "}
+                  {last.prevHash === "GENESIS" ? "GENESIS" : `${last.prevHash.slice(0, 12)}…`}
+                </div>
+                {approved && (
+                  <div className="mt-1 text-[11px] font-medium uppercase tracking-wide text-emerald-700">
+                    Hash-chained · rulebook {last.rulebook}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </div>

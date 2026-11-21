@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   cacheComponents: true,
   partialPrefetching: true,
+  serverExternalPackages: ["pdfjs-dist", "mammoth"],
   turbopack: {
     rules: {
       "*.css": {

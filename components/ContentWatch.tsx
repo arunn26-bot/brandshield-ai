@@ -21,7 +21,7 @@ function fmt(d: Date) {
 
 function Ring({ pct, state, label }: { pct: number; state: "ok" | "soon" | "stale"; label: string }) {
   const r = 22, c = 2 * Math.PI * r;
-  const color = state === "stale" ? "#f87171" : state === "soon" ? "#fbbf24" : "#5eead4";
+  const color = state === "stale" ? "#f87171" : state === "soon" ? "#fbbf24" : "#6ff5c9";
   return (
     <svg viewBox="0 0 56 56" className="h-14 w-14 shrink-0" aria-label={label}>
       <circle cx="28" cy="28" r={r} fill="none" stroke="rgba(243,239,228,.12)" strokeWidth="6" />
@@ -47,6 +47,8 @@ export default function ContentWatch({
     ? approved.map((e) => ({ id: `e${e.n}`, label: `Approved · entry #${e.n} · ${e.reviewer}`, text: e.content }))
     : EXAMPLES;
 
+  const contentKey = items.map((i) => i.text).join("|");
+
   const rows = useMemo(
     () =>
       items.map((it) => {
@@ -58,7 +60,7 @@ export default function ContentWatch({
         return { ...it, issues, life, daysLeft };
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [items.map((i) => i.text).join("|"), offset, facts, today]
+    [contentKey, offset, facts, today]
   );
 
   const staleCount = rows.filter((r) => r.issues.length > 0).length;
@@ -96,7 +98,7 @@ export default function ContentWatch({
   return (
     <section id="watch" className="relative scroll-mt-20 overflow-hidden bg-night text-cream">
       <div className="pointer-events-none absolute -left-24 top-10 h-72 w-72 animate-floaty rounded-full bg-mint/10 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-10 h-80 w-80 animate-floaty rounded-full bg-[#e6c364]/10 blur-3xl" style={{ animationDuration: "7s" }} />
+      <div className="pointer-events-none absolute -right-20 bottom-10 h-80 w-80 animate-floaty rounded-full bg-[#e8c56a]/10 blur-3xl" style={{ animationDuration: "7s" }} />
 
       <div className="relative mx-auto max-w-6xl px-6 py-24">
         <div className="grid items-center gap-8 md:grid-cols-[1fr_auto]">
@@ -104,8 +106,8 @@ export default function ContentWatch({
             <div className="flex flex-wrap items-end gap-3">
               <h2 className="font-display text-5xl md:text-6xl">Content Watch</h2>
               <span className="mb-1 flex items-center gap-1.5">
-                <svg viewBox="0 0 20 20" className="h-3 w-3 animate-twinkle" aria-hidden><path d="M10 0l2.400 7.600L20 10l-7.600 2.400L10 20l-2.400-7.600L0 10l7.600-2.400z" fill="#e6c364" /></svg>
-                <span className="bg-gradient-to-r from-[#fbe9a6] via-[#e6c364] to-[#b8862b] bg-clip-text px-1 pb-1 font-signature text-lg leading-[1.7] text-transparent md:text-xl">
+                <svg viewBox="0 0 20 20" className="h-3 w-3 animate-twinkle" aria-hidden><path d="M10 0l2.400 7.600L20 10l-7.600 2.400L10 20l-2.400-7.600L0 10l7.600-2.400z" fill="#e8c56a" /></svg>
+                <span className="bg-gradient-to-r from-[#fbe9a6] via-[#e8c56a] to-[#b8862b] bg-clip-text px-1 pb-1 font-signature text-lg leading-[1.7] text-transparent md:text-xl">
                   Signature feature
                 </span>
               </span>
@@ -141,7 +143,7 @@ export default function ContentWatch({
               type="range" min={0} max={120} value={offset}
               onChange={(e) => setOffset(Number(e.target.value))}
               aria-label="Preview date"
-              className="mt-5 w-full accent-[#5eead4]"
+              className="mt-5 w-full accent-[#6ff5c9]"
             />
             <div className="relative mt-1 h-10">
               {pins.map(([d, ids]) => (
