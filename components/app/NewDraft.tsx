@@ -223,7 +223,7 @@ export default function NewDraft({
   const canSubmit = activeText.trim().length > 0 && confirmed && title.trim().length > 0;
 
   return (
-    <div className="grid items-start gap-6 xl:grid-cols-[1.5fr_1fr]">
+    <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1.9fr)_minmax(0,1fr)]">
       {/* Left: brief + editor */}
       <div className="min-w-0 space-y-5">
         {/* Intent card */}
@@ -427,18 +427,17 @@ export default function NewDraft({
         </section>
 
         {/* AI review */}
-        <div className="rounded-3xl bg-cream text-ink">
-          <AiReview
-            draft={draft}
-            findings={textFindings}
-            onResult={(list) => setAi({ draft, findings: list })}
-            disabled={isImage}
-          />
-        </div>
+        <AiReview
+          tone="dark"
+          draft={draft}
+          findings={textFindings}
+          onResult={(list) => setAi({ draft, findings: list })}
+          disabled={isImage}
+        />
       </div>
 
       {/* Right: score + findings + submit */}
-      <div className="space-y-4 xl:sticky xl:top-20">
+      <div className="min-w-0 space-y-4 xl:sticky xl:top-20">
         <section className="rounded-3xl border border-white/10 bg-night-2 p-5">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <ScoreRing score={score} size={64} />
@@ -558,9 +557,9 @@ export default function NewDraft({
           )}
         </section>
 
-        <section className="rounded-3xl border border-white/10 bg-night-2 p-5">
+        <section className="rounded-3xl border border-white/10 bg-night-2 p-4">
           <div className="flex items-center justify-between gap-2">
-            <h3 className="font-display text-lg">Send for review</h3>
+            <h3 className="font-display text-base">Send for review</h3>
             <span className="rounded-full bg-white/5 px-2.5 py-0.5 text-[10px] uppercase tracking-wide text-cream/50">{channel}</span>
           </div>
           <p className="mt-2 text-xs leading-5 text-cream/55">
@@ -572,7 +571,7 @@ export default function NewDraft({
           <button
             onClick={submit}
             disabled={!canSubmit}
-            className="mt-4 w-full rounded-full bg-mint px-4 py-2.5 text-sm font-medium text-night shadow-[0_14px_36px_-16px_rgba(111,245,201,0.7)] transition hover:-translate-y-0.5 hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
+            className="mt-3 w-full rounded-full bg-mint px-4 py-2 text-sm font-medium text-night shadow-[0_14px_36px_-16px_rgba(111,245,201,0.7)] transition hover:-translate-y-0.5 hover:bg-white disabled:cursor-not-allowed disabled:opacity-40"
           >
             Submit for review
           </button>

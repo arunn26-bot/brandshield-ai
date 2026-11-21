@@ -1,4 +1,4 @@
-import { RULE_META } from "@/data/brand";
+import { BRAND, RULE_META } from "@/data/brand";
 import type { AiProposal, DroppedProposal, Finding } from "./types";
 import { findQuote } from "./normalize";
 
@@ -15,6 +15,9 @@ export const AI_ALLOWED_RULES = new Set([
 ]);
 
 export const AI_ALLOWED_CATEGORIES = new Set(["Tone", "Terminology"]);
+
+/** Names the rulebook already approves. The model may not flag them. */
+const APPROVED_NAMES = [BRAND.name, "Nest Save"];
 
 export interface GroundingResult {
   accepted: Finding[];
@@ -96,6 +99,12 @@ export function groundProposals(
     const span = findQuote(draft, quote);
     if (!span) {
       dropped.push(drop("quote_not_found", "Quote does not appear in the draft.", raw));
+      continue;
+    }
+
+    // A terminology proposal must not "correct" an approved name, or change nothing.
+    if (meta.category === "Terminology" && (APPROVED_NAMES.includes(quote) || p.fix?.trim() === quote)) {
+      dropped.push(drop("duplicate", `"${quote}" is already an approved name, or the suggestion changes nothing.`, raw));
       continue;
     }
 
